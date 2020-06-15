@@ -13,7 +13,9 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        //
+        $this->app->register(\App\Addons\ProductsPremoderation\ServiceProviders\AddonServiceProvider::class);
+        $this->app->register(\App\Addons\ProductUsergroups\ServiceProviders\AddonServiceProvider::class);
+        $this->app->register(\App\Addons\Warehouses\ServiceProviders\AddonServiceProvider::class);
     }
 
     /**
