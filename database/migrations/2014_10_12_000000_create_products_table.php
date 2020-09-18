@@ -16,12 +16,7 @@ class CreateProductsTable extends Migration
         Schema::create('products', function (Blueprint $table) {
             $table->id();
             $table->string('sku');
-            $table->integer('price')->unsigned();
             $table->string('status')->default('active');
-            $table->string('premoderation_status')->default('approved');
-            $table->integer('amount')->default(0);
-            $table->integer('has_amount_split_by_stock')->unsigned()->default(0);
-            $table->json('usergroup_ids');
             $table->timestamps();
         });
     }

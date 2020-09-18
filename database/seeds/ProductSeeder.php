@@ -1,16 +1,15 @@
 <?php
 
-use App\Products\Product;
+use App\Products\Models\Product;
+use App\Products\Models\ProductDescription;
 use Faker\Factory;
 use Illuminate\Database\Seeder;
 
 class ProductSeeder extends Seeder
 {
-    private $statuses = ['active', 'hidden', 'disabled'];
+    private array $statuses = ['active', 'hidden', 'disabled'];
 
-    private $premoderation_statuses = ['approved', 'rejected'];
-
-    private $usergroup_ids = [[], [1], [1, 3], [2, 3], [3]];
+    private array $lang_codes = ['en', 'ja'];
 
     public function run()
     {
@@ -19,12 +18,17 @@ class ProductSeeder extends Seeder
         for ($i = 0; $i < 200; $i++) {
             $product = new Product();
             $product->sku = $faker->word . '_' . sprintf('%03d', $i);
-            $product->price = random_int(1 * 100, 20 * 100);
             $product->status = $this->statuses[array_rand($this->statuses)];
-            $product->premoderation_status = $this->premoderation_statuses[array_rand($this->premoderation_statuses)];
-            $product->usergroup_ids = $this->usergroup_ids[array_rand($this->usergroup_ids)];
-            $product->amount = random_int(0, 99);
             $product->save();
+
+            foreach ($this->lang_codes as $lang_code) {
+                $description = new ProductDescription();
+                $description->lang_code = $lang_code;
+                $description->product_id = $product->id;
+                $description->name = implode(' ', $faker->words(3));
+                $description->description = implode(PHP_EOL, $faker->paragraphs(2));
+                $description->save();
+            }
         }
     }
 }
