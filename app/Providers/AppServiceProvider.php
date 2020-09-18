@@ -29,39 +29,6 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        $productSchema = new ModelSchema();
-        $productSchema
-            ->setTableName('products')
-            ->setKeyName('id')
-            ->addAttribute(new Attribute('id', new PrimitiveAttributeType('int')))
-            ->addAttribute(new Attribute('sku', new PrimitiveAttributeType('string')))
-            ->addAttribute(new Attribute('status', new PrimitiveAttributeType('string')))
-            ->addRelation(
-                new Relation(
-                    'product_descriptions',
-                    static function (Product $product) {
-                        return $product->hasMany(ProductDescription::class);
-                    }
-                )
-            );
-        Product::$modelSchema = $productSchema;
-
-        $productDescriptionSchema = new ModelSchema();
-        $productDescriptionSchema
-            ->setTableName('product_descriptions')
-            ->setKeyName('id')
-            ->addAttribute(new Attribute('id', new PrimitiveAttributeType('int')))
-            ->addAttribute(new Attribute('name', new PrimitiveAttributeType('string')))
-            ->addAttribute(new Attribute('description', new PrimitiveAttributeType('string')))
-            ->addAttribute(new Attribute('lang_code', new PrimitiveAttributeType('string')))
-            ->addRelation(
-                new Relation(
-                    'product',
-                    static function (ProductDescription $productDescription) {
-                        $productDescription->hasOne(Product::class);
-                    }
-                )
-            );
-        ProductDescription::$modelSchema = $productDescriptionSchema;
+        //
     }
 }
