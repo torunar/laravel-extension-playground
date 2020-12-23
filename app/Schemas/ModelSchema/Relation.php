@@ -16,7 +16,7 @@ class Relation
         $this->resolver = $resolver;
     }
 
-    public function getName()
+    public function getName(): string
     {
         return $this->name;
     }
