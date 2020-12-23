@@ -44,7 +44,6 @@ trait DescribedByModelSchema
         // TODO: Нужно ли общее событие, или модели должны запускать свои индивидуальные события?
         // TODO: Класс модели может быть свойством схемы. С другой стороны, зачем схеме знать о модели, с которой она связана?
         SetModelSchemaEvent::dispatch(static::class, $schema);
-
         static::$modelSchema = $schema;
     }
 }

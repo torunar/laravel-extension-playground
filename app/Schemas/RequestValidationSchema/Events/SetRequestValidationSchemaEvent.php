@@ -1,41 +1,38 @@
 <?php
 
-namespace App\Schemas\ModelSchema\Events;
+namespace App\Schemas\RequestValidationSchema\Events;
 
-use App\Schemas\ModelSchema\ModelSchema;
+use App\Schemas\RequestValidationSchema\RequestValidationSchema;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 
-class SetModelSchemaEvent
+class SetRequestValidationSchemaEvent
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
-    /**
-     * @var string
-     */
-    protected string $modelClass;
+    protected string $requestClass;
 
     /**
-     * @var \App\Schemas\ModelSchema\ModelSchema
+     * @var \App\Schemas\RequestValidationSchema\RequestValidationSchema
      */
-    protected ModelSchema $schema;
+    protected RequestValidationSchema $schema;
 
     /**
      * Create a new event instance.
      *
      * @return void
      */
-    public function __construct(string $modelClass, ModelSchema $schema)
+    public function __construct(string $requestClass, RequestValidationSchema $schema)
     {
-        $this->modelClass = $modelClass;
+        $this->requestClass = $requestClass;
         $this->schema = $schema;
     }
 
-    public function getModelClass(): string
+    public function getRequestClass(): string
     {
-        return $this->modelClass;
+        return $this->requestClass;
     }
 
     /**
