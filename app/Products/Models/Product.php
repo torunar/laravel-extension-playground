@@ -33,8 +33,6 @@ class Product extends Model
                 )
             );
 
-        // dispatch event here
-
-        static::$modelSchema = $schema;
+        static::setModelSchema($schema);
     }
 }

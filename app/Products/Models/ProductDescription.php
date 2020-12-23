@@ -36,8 +36,6 @@ class ProductDescription extends Model
                 )
             );
 
-        // dispatch event here
-
-        static::$modelSchema = $schema;
+        static::setModelSchema($schema);
     }
 }

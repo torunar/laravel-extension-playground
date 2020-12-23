@@ -2,9 +2,11 @@
 
 namespace App\Schemas\ModelSchema;
 
+use App\Schemas\ModelSchema\Events\SetModelSchemaEvent;
+
 trait DescribedByModelSchema
 {
-    public static ModelSchema $modelSchema;
+    protected static ModelSchema $modelSchema;
 
     public static function bootDescribedByModelSchema()
     {
@@ -20,7 +22,6 @@ trait DescribedByModelSchema
                     $model->setKeyName($modelSchema->getKeyName());
                 }
 
-                /** @var \App\Schemas\ModelSchema\Attribute $attribute */
                 foreach ($modelSchema->getAttributes() as $attribute) {
                     $model->casts[$attribute->getName()] = $attribute->getType()->getCast();
                     if ($attribute->isFillable()) {
@@ -31,11 +32,19 @@ trait DescribedByModelSchema
                     }
                 }
 
-                /** @var \App\Schemas\ModelSchema\Relation $relation */
                 foreach ($modelSchema->getRelations() as $relation) {
                     static::resolveRelationUsing($relation->getName(), $relation->getResolver());
                 }
             }
         );
+    }
+
+    public static function setModelSchema(ModelSchema $schema)
+    {
+        // TODO: Нужно ли общее событие, или модели должны запускать свои индивидуальные события?
+        // TODO: Класс модели может быть свойством схемы. С другой стороны, зачем схеме знать о модели, с которой она связана?
+        SetModelSchemaEvent::dispatch(static::class, $schema);
+
+        static::$modelSchema = $schema;
     }
 }

@@ -5,12 +5,14 @@ namespace Tests\Unit;
 use App\Schemas\ModelSchema\Attribute;
 use App\Schemas\ModelSchema\CastedAttributeType;
 use App\Schemas\ModelSchema\DescribedByModelSchema;
+use App\Schemas\ModelSchema\Events\SetModelSchemaEvent;
 use App\Schemas\ModelSchema\ModelSchema;
 use App\Schemas\ModelSchema\PrimitiveAttributeType;
 use App\Schemas\ModelSchema\Relation;
 use Illuminate\Contracts\Database\Eloquent\CastsAttributes;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Support\Facades\Event;
 use Tests\TestCase;
 
 class EmojiCaster implements CastsAttributes
@@ -64,7 +66,18 @@ class ModelSchemaTest extends TestCase
                 )
             );
 
-        FakeModel::$modelSchema = $modelSchema;
+        FakeModel::setModelSchema($modelSchema);
+    }
+
+    public function testSetModelSchema()
+    {
+        Event::fake();
+
+        FakeModel::setModelSchema(new ModelSchema());
+
+        Event::assertDispatched(static function (SetModelSchemaEvent $event) {
+            return $event->getModelClass() === FakeModel::class;
+        });
     }
 
     /**
