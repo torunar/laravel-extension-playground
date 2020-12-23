@@ -17,8 +17,7 @@ class Product extends Model
     {
         parent::boot();
 
-        $schema = new ModelSchema();
-        $schema
+        $schema = (new ModelSchema())
             ->setTableName('products')
             ->setKeyName('id')
             ->addAttribute(new Attribute('id', new PrimitiveAttributeType('int')))

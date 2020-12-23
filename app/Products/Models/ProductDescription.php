@@ -19,8 +19,7 @@ class ProductDescription extends Model
     {
         parent::boot();
 
-        $schema = new ModelSchema();
-        $schema
+        $schema = (new ModelSchema())
             ->setTableName('product_descriptions')
             ->setKeyName('id')
             ->addAttribute(new Attribute('id', new PrimitiveAttributeType('int')))
