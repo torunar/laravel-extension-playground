@@ -6,9 +6,6 @@ class Attribute
 {
     protected string $name;
 
-    /**
-     * @var \App\Schemas\ModelSchema\AttributeTypeInterface
-     */
     protected AttributeTypeInterface $type;
 
     protected bool $isFillable;

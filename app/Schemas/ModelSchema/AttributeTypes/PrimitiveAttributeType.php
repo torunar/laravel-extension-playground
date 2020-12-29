@@ -1,6 +1,8 @@
 <?php
 
-namespace App\Schemas\ModelSchema;
+namespace App\Schemas\ModelSchema\AttributeTypes;
+
+use App\Schemas\ModelSchema\AttributeTypeInterface;
 
 class PrimitiveAttributeType implements AttributeTypeInterface
 {

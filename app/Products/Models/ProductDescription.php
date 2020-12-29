@@ -5,7 +5,7 @@ namespace App\Products\Models;
 use App\Schemas\ModelSchema\Attribute;
 use App\Schemas\ModelSchema\DescribedByModelSchema;
 use App\Schemas\ModelSchema\ModelSchema;
-use App\Schemas\ModelSchema\PrimitiveAttributeType;
+use App\Schemas\ModelSchema\AttributeTypes\PrimitiveAttributeType;
 use App\Schemas\ModelSchema\Relation;
 use Illuminate\Database\Eloquent\Model;
 
