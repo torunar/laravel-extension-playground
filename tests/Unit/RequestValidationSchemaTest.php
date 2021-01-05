@@ -82,7 +82,7 @@ class RequestValidationSchemaTest extends TestCase
             [
                 'field' => [$validatorCallback],
             ],
-            $schema->getRules(),
+            $schema->getNativeRulesRepresentation(),
         );
     }
 
@@ -98,7 +98,7 @@ class RequestValidationSchemaTest extends TestCase
             [
                 'field' => [$ruleObject],
             ],
-            $schema->getRules()
+            $schema->getNativeRulesRepresentation()
         );
     }
 
@@ -112,7 +112,7 @@ class RequestValidationSchemaTest extends TestCase
             [
                 'field' => ['test1', 'test2'],
             ],
-            $schema->getRules()
+            $schema->getNativeRulesRepresentation()
         );
     }
 
@@ -138,7 +138,7 @@ class RequestValidationSchemaTest extends TestCase
                 'object'  => [$ruleObject],
                 'closure' => [$validatorCallback, $validatorCallback],
             ],
-            $schema->getRules()
+            $schema->getNativeRulesRepresentation()
         );
     }
 }

@@ -26,7 +26,23 @@ class RequestValidationSchema
         return $this;
     }
 
+    /**
+     * @param array<string, array<string, \App\Schemas\RequestValidationSchema\ValidationRule>> $rules
+     *
+     * @return $this
+     */
+    public function setRules(array $rules): self
+    {
+        $this->rules = $rules;
+        return $this;
+    }
+
     public function getRules(): array
+    {
+        return $this->rules;
+    }
+
+    public function getNativeRulesRepresentation(): array
     {
         $nativeValidatorRulesRepresentation = $this->rules;
         foreach ($nativeValidatorRulesRepresentation as $field => &$rules) {

@@ -16,7 +16,7 @@ trait DescribedByRequestValidationSchema
     public function rules(): array
     {
         return static::$requestValidationSchema
-            ? static::$requestValidationSchema->getRules()
+            ? static::$requestValidationSchema->getNativeRulesRepresentation()
             : [];
     }
 
