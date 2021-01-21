@@ -8,18 +8,12 @@ use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 
-class SetModelSchemaEvent
+class CreateModelSchemaEvent
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
-    /**
-     * @var string
-     */
     protected string $modelClass;
 
-    /**
-     * @var \App\Schemas\ModelSchema\ModelSchema
-     */
     protected ModelSchema $schema;
 
     /**

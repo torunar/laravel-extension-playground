@@ -7,8 +7,8 @@ use Illuminate\Support\Collection;
 
 class GetAllProductsCommand
 {
-    public function run(): Collection
+    public function run(array $with = []): Collection
     {
-        return Product::with('product_descriptions')->get();
+        return Product::with($with)->get();
     }
 }

@@ -6,7 +6,7 @@ use App\Schemas\ModelSchema\Attribute;
 use App\Schemas\ModelSchema\AttributeTypes\CastedAttributeType;
 use App\Schemas\ModelSchema\AttributeTypes\PrimitiveAttributeType;
 use App\Schemas\ModelSchema\DescribedByModelSchema;
-use App\Schemas\ModelSchema\Events\SetModelSchemaEvent;
+use App\Schemas\ModelSchema\Events\CreateModelSchemaEvent;
 use App\Schemas\ModelSchema\ModelSchema;
 use App\Schemas\ModelSchema\Relation;
 use Illuminate\Contracts\Database\Eloquent\CastsAttributes;
@@ -76,7 +76,7 @@ class ModelSchemaTest extends TestCase
         FakeModel::setModelSchema(new ModelSchema());
 
         Event::assertDispatched(
-            static function (SetModelSchemaEvent $event) {
+            static function (CreateModelSchemaEvent $event) {
                 return $event->getModelClass() === FakeModel::class;
             }
         );

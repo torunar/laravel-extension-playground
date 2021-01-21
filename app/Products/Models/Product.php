@@ -2,11 +2,8 @@
 
 namespace App\Products\Models;
 
-use App\Schemas\ModelSchema\Attribute;
+use App\Products\SchemaProviders\ProductSchemaProvider;
 use App\Schemas\ModelSchema\DescribedByModelSchema;
-use App\Schemas\ModelSchema\ModelSchema;
-use App\Schemas\ModelSchema\AttributeTypes\PrimitiveAttributeType;
-use App\Schemas\ModelSchema\Relation;
 use Illuminate\Database\Eloquent\Model;
 
 class Product extends Model
@@ -17,21 +14,6 @@ class Product extends Model
     {
         parent::boot();
 
-        $schema = (new ModelSchema())
-            ->setTableName('products')
-            ->setKeyName('id')
-            ->addAttribute(new Attribute('id', new PrimitiveAttributeType('int')))
-            ->addAttribute(new Attribute('sku', new PrimitiveAttributeType('string')))
-            ->addAttribute(new Attribute('status', new PrimitiveAttributeType('string')))
-            ->addRelation(
-                new Relation(
-                    'product_descriptions',
-                    static function (self $product) {
-                        return $product->hasMany(ProductDescription::class);
-                    }
-                )
-            );
-
-        static::setModelSchema($schema);
+        static::setModelSchema(ProductSchemaProvider::getModelSchema());
     }
 }

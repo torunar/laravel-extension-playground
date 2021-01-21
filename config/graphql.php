@@ -101,7 +101,7 @@ return [
     'schemas' => [
         'default' => [
             'query' => [
-                // 'example_query' => ExampleQuery::class,
+                \App\Products\GraphQL\Queries\GetProductsQuery::class,
             ],
             'mutation' => [
                 // 'example_mutation'  => ExampleMutation::class,
@@ -121,15 +121,14 @@ return [
     // ]
     //
     'types' => [
-        // 'example'           => ExampleType::class,
-        // 'relation_example'  => ExampleRelationType::class,
-        // \Rebing\GraphQL\Support\UploadType::class,
+        \App\Products\GraphQL\Types\ProductType::class,
+        \App\Products\GraphQL\Types\ProductDescriptionType::class,
     ],
 
     // The types will be loaded on demand. Default is to load all types on each request
     // Can increase performance on schemes with many types
     // Presupposes the config type key to match the type class name property
-    'lazyload_types' => false,
+    'lazyload_types' => true,
 
     // This callable will be passed the Error object for each errors GraphQL catch.
     // The method should return an array representing the error.
