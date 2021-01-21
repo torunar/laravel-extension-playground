@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Schemas\RequestValidationSchema\RuleTypes;
+namespace App\Schemas\ValidationSchema\RuleTypes;
 
-use App\Schemas\RequestValidationSchema\RuleTypeInterface;
+use App\Schemas\ValidationSchema\RuleTypeInterface;
 use Closure;
 
 class ClosureRuleType implements RuleTypeInterface

@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Schemas\RequestValidationSchema;
+namespace App\Schemas\ValidationSchema;
 
-class RequestValidationSchema
+class ValidationSchema
 {
     /**
-     * @var array<string, array<string, \App\Schemas\RequestValidationSchema\ValidationRule>>
+     * @var array<string, array<string, \App\Schemas\ValidationSchema\ValidationRule>>
      */
     private array $rules = [];
 
@@ -17,7 +17,7 @@ class RequestValidationSchema
 
         $ruleType = $rule->getType();
         if ($ruleType instanceof UniqueRuleTypeInterface) {
-            /** @var \App\Schemas\RequestValidationSchema\UniqueRuleTypeInterface $ruleType */
+            /** @var \App\Schemas\ValidationSchema\UniqueRuleTypeInterface $ruleType */
             $this->rules[$rule->getField()][$ruleType->getOperation()] = $rule;
         } else {
             $this->rules[$rule->getField()][] = $rule;
@@ -27,7 +27,7 @@ class RequestValidationSchema
     }
 
     /**
-     * @param array<string, array<string, \App\Schemas\RequestValidationSchema\ValidationRule>> $rules
+     * @param array<string, array<string, \App\Schemas\ValidationSchema\ValidationRule>> $rules
      *
      * @return $this
      */

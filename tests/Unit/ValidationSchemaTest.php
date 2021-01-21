@@ -2,11 +2,11 @@
 
 namespace Tests\Unit;
 
-use App\Schemas\RequestValidationSchema\RequestValidationSchema;
-use App\Schemas\RequestValidationSchema\RuleTypes\ClosureRuleType;
-use App\Schemas\RequestValidationSchema\RuleTypes\RuleObjectRuleType;
-use App\Schemas\RequestValidationSchema\UniqueRuleTypeInterface;
-use App\Schemas\RequestValidationSchema\ValidationRule;
+use App\Schemas\ValidationSchema\ValidationSchema;
+use App\Schemas\ValidationSchema\RuleTypes\ClosureRuleType;
+use App\Schemas\ValidationSchema\RuleTypes\RuleObjectRuleType;
+use App\Schemas\ValidationSchema\UniqueRuleTypeInterface;
+use App\Schemas\ValidationSchema\ValidationRule;
 use Illuminate\Contracts\Validation\Rule;
 use Tests\TestCase;
 
@@ -69,13 +69,13 @@ class ParameterizedTestRuleType1 implements UniqueRuleTypeInterface
     }
 }
 
-class RequestValidationSchemaTest extends TestCase
+class ValidationSchemaTest extends TestCase
 {
     public function testClosure()
     {
         $validatorCallback = static function () { };
 
-        $schema = (new RequestValidationSchema())
+        $schema = (new ValidationSchema())
             ->addRule(new ValidationRule('field', new ClosureRuleType($validatorCallback)));
 
         $this->assertEquals(
@@ -89,7 +89,7 @@ class RequestValidationSchemaTest extends TestCase
     public function testRuleObject()
     {
         $ruleObject = new TestRuleObject();
-        $schema = (new RequestValidationSchema())
+        $schema = (new ValidationSchema())
             ->addRule(
                 new ValidationRule('field', new RuleObjectRuleType($ruleObject))
             );
@@ -104,7 +104,7 @@ class RequestValidationSchemaTest extends TestCase
 
     public function testMultipleRules()
     {
-        $schema = (new RequestValidationSchema())
+        $schema = (new ValidationSchema())
             ->addRule(new ValidationRule('field', new TestRuleType1()))
             ->addRule(new ValidationRule('field', new TestRuleType2()));
 
@@ -121,7 +121,7 @@ class RequestValidationSchemaTest extends TestCase
         $validatorCallback = static function () { };
         $ruleObject = new TestRuleObject();
 
-        $schema = (new RequestValidationSchema())
+        $schema = (new ValidationSchema())
             ->addRule(new ValidationRule('field', new TestRuleType1()))
             ->addRule(new ValidationRule('field', new TestRuleType1()))
             ->addRule(new ValidationRule('param', new ParameterizedTestRuleType1(1)))

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Schemas\RequestValidationSchema;
+namespace App\Schemas\ValidationSchema;
 
 interface RuleTypeInterface
 {

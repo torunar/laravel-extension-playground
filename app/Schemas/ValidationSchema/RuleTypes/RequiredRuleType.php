@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Schemas\RequestValidationSchema\RuleTypes;
+namespace App\Schemas\ValidationSchema\RuleTypes;
 
-use App\Schemas\RequestValidationSchema\UniqueRuleTypeInterface;
+use App\Schemas\ValidationSchema\UniqueRuleTypeInterface;
 
 class RequiredRuleType implements UniqueRuleTypeInterface
 {
