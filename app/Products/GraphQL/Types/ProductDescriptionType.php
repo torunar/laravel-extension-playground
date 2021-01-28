@@ -8,10 +8,8 @@ use Rebing\GraphQL\Support\Type;
 
 class ProductDescriptionType extends Type
 {
-    const ID = 'ProductDescription';
-
     protected $attributes = [
-        'name'        => self::ID,
+        'name'        => 'product_description',
         'description' => 'A product description',
         'model'       => ProductDescription::class,
     ];

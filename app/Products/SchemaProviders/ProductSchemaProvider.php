@@ -2,7 +2,7 @@
 
 namespace App\Products\SchemaProviders;
 
-use App\Products\GraphQL\Types\ProductDescriptionType;
+use App\GraphQL\Support\Facades\GraphQL;
 use App\Products\Models\Product;
 use App\Products\Models\ProductDescription;
 use App\Schemas\GraphQLType\Attribute as TypeAttribute;
@@ -16,7 +16,6 @@ use App\Schemas\ModelSchema\ModelSchema;
 use App\Schemas\ModelSchema\ModelSchemaProviderInterface;
 use App\Schemas\ModelSchema\Relation;
 use GraphQL\Type\Definition\Type;
-use Rebing\GraphQL\Support\Facades\GraphQL;
 
 class ProductSchemaProvider implements ModelSchemaProviderInterface, GraphQLTypeSchemaProviderInterface
 {
@@ -62,7 +61,7 @@ class ProductSchemaProvider implements ModelSchemaProviderInterface, GraphQLType
                 ->addAttribute(
                     new TypeAttribute(
                         'product_descriptions',
-                        Type::listOf(GraphQL::type(ProductDescriptionType::ID)),
+                        Type::listOf(GraphQL::type(ProductDescription::class)),
                         'Product descriptions'
                     )
                 );

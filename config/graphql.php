@@ -121,8 +121,6 @@ return [
     // ]
     //
     'types' => [
-        \App\Products\GraphQL\Types\ProductType::class,
-        \App\Products\GraphQL\Types\ProductDescriptionType::class,
     ],
 
     // The types will be loaded on demand. Default is to load all types on each request

@@ -2,7 +2,7 @@
 
 namespace App\Products\SchemaProviders;
 
-use App\Products\GraphQL\Types\ProductType;
+use App\GraphQL\Support\Facades\GraphQL;
 use App\Products\Models\Product;
 use App\Products\Models\ProductDescription;
 use App\Schemas\GraphQLType\Attribute as TypeAttribute;
@@ -16,7 +16,6 @@ use App\Schemas\ModelSchema\ModelSchema;
 use App\Schemas\ModelSchema\ModelSchemaProviderInterface;
 use App\Schemas\ModelSchema\Relation;
 use GraphQL\Type\Definition\Type;
-use Rebing\GraphQL\Support\Facades\GraphQL;
 
 class ProductDescriptionSchemaProvider implements ModelSchemaProviderInterface, GraphQLTypeSchemaProviderInterface
 {
@@ -61,7 +60,7 @@ class ProductDescriptionSchemaProvider implements ModelSchemaProviderInterface, 
                 ->addAttribute(new TypeAttribute('name', Type::nonNull(Type::string()), 'Name'))
                 ->addAttribute(new TypeAttribute('description', Type::nonNull(Type::string()), 'Description'))
                 ->addAttribute(new TypeAttribute('lang_code', Type::nonNull(Type::string()), 'Language code'))
-                ->addAttribute(new TypeAttribute('product', GraphQL::type(ProductType::ID), 'Product'));
+                ->addAttribute(new TypeAttribute('product', GraphQL::type(Product::class), 'Product'));
 
             // TODO: Нужно ли общее событие, или схемы должны запускать свои индивидуальные события?
             // TODO: Класс модели может быть свойством схемы. С другой стороны, зачем схеме знать о модели, с которой она связана?

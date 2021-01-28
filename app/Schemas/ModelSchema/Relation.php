@@ -21,9 +21,6 @@ class Relation
         return $this->name;
     }
 
-    /**
-     * @return \Closure
-     */
     public function getResolver(): Closure
     {
         return $this->resolver;
