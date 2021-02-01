@@ -2,10 +2,8 @@
 
 namespace App\Products\SchemaProviders;
 
-use App\GraphQL\Support\Facades\GraphQL;
 use App\Products\Models\Product;
 use App\Products\Models\ProductDescription;
-use App\Schemas\GraphQLType\Attribute as TypeAttribute;
 use App\Schemas\GraphQLType\Events\CreateGraphQLTypeSchemaEvent;
 use App\Schemas\GraphQLType\GraphQLTypeSchema;
 use App\Schemas\GraphQLType\GraphQLTypeSchemaProviderInterface;
@@ -15,7 +13,7 @@ use App\Schemas\ModelSchema\Events\CreateModelSchemaEvent;
 use App\Schemas\ModelSchema\ModelSchema;
 use App\Schemas\ModelSchema\ModelSchemaProviderInterface;
 use App\Schemas\ModelSchema\Relation;
-use GraphQL\Type\Definition\Type;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class ProductDescriptionSchemaProvider implements ModelSchemaProviderInterface, GraphQLTypeSchemaProviderInterface
 {
@@ -36,8 +34,9 @@ class ProductDescriptionSchemaProvider implements ModelSchemaProviderInterface, 
                 ->addRelation(
                     new Relation(
                         'product',
-                        static function (ProductDescription $productDescription) {
-                            $productDescription->hasOne(Product::class);
+                        ProductDescription::class,
+                        static function (ProductDescription $productDescription): HasOne {
+                            return $productDescription->hasOne(Product::class);
                         }
                     )
                 );
@@ -55,12 +54,7 @@ class ProductDescriptionSchemaProvider implements ModelSchemaProviderInterface, 
     public static function getGraphQLTypeSchema(): GraphQLTypeSchema
     {
         if (static::$graphqlTypeSchema === null) {
-            $schema = (new GraphQLTypeSchema())
-                ->addAttribute(new TypeAttribute('id', Type::nonNull(Type::int()), 'ID'))
-                ->addAttribute(new TypeAttribute('name', Type::nonNull(Type::string()), 'Name'))
-                ->addAttribute(new TypeAttribute('description', Type::nonNull(Type::string()), 'Description'))
-                ->addAttribute(new TypeAttribute('lang_code', Type::nonNull(Type::string()), 'Language code'))
-                ->addAttribute(new TypeAttribute('product', GraphQL::type(Product::class), 'Product'));
+            $schema = GraphQLTypeSchema::createFromModelSchema(static::getModelSchema());
 
             // TODO: Нужно ли общее событие, или схемы должны запускать свои индивидуальные события?
             // TODO: Класс модели может быть свойством схемы. С другой стороны, зачем схеме знать о модели, с которой она связана?

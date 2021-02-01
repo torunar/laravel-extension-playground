@@ -13,8 +13,6 @@ class Attribute
 
     protected string $description;
 
-    protected ?string $alias;
-
     protected bool $isSelectable;
 
     protected ?Closure $resolver;
@@ -25,15 +23,13 @@ class Attribute
         string $name,
         Type $type,
         string $description,
-        string $alias = null,
-        bool $isSelectable = true,
+        Closure $privacy = null,
         Closure $resolver = null,
-        Closure $privacy = null
+        bool $isSelectable = true
     ) {
         $this->name = $name;
         $this->type = $type;
         $this->description = $description;
-        $this->alias = $alias;
         $this->isSelectable = $isSelectable;
         $this->resolver = $resolver;
         $this->privacy = $privacy;
@@ -52,11 +48,6 @@ class Attribute
     public function getDescription(): string
     {
         return $this->description;
-    }
-
-    public function getAlias(): ?string
-    {
-        return $this->alias;
     }
 
     public function isSelectable(): bool

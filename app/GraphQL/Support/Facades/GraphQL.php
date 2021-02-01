@@ -6,9 +6,9 @@ use App\GraphQL\Services\GraphQLService;
 use Illuminate\Support\Facades\Facade;
 
 /**
- * @method static type(string $type): \GraphQL\Type\Definition\Type
+ * @method static \GraphQL\Type\Definition\Type type(string $type)
  * @see \App\GraphQL\Services\GraphQLService::type
- * @method static registerType(string $typeClass): \App\GraphQL\Services\GraphQLService
+ * @method static \App\GraphQL\Services\GraphQLService registerType(string $typeClass)
  * @see \App\GraphQL\Services\GraphQLService::registerType
  */
 class GraphQL extends Facade

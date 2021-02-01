@@ -2,8 +2,20 @@
 
 namespace App\GraphQL;
 
+use GraphQL\Type\Definition\Type;
+
 class TypeResolver
 {
+    private array $defaultTypeAliases = [
+        'int'     => Type::INT,
+        'integer' => Type::INT,
+        'string'  => Type::STRING,
+        'bool'    => Type::BOOLEAN,
+        'boolean' => Type::BOOLEAN,
+        'float'   => Type::FLOAT,
+        'id'      => Type::ID,
+    ];
+
     private array $typeClassToTypeNameMap = [];
 
     private array $modelClassToTypeNameMap = [];
@@ -36,8 +48,21 @@ class TypeResolver
         return null;
     }
 
+    private function getDefaultTypeByAlias(string $type): ?string
+    {
+        if (isset($this->defaultTypeAliases[$type])) {
+            return $this->defaultTypeAliases[$type];
+        }
+
+        return null;
+    }
+
     public function resolve(string $type): string
     {
+        if ($this->getDefaultTypeByAlias($type)) {
+            return $this->getDefaultTypeByAlias($type);
+        }
+
         if ($this->resolveByModelClass($type)) {
             return $this->resolveByModelClass($type);
         }
