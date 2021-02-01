@@ -2,6 +2,7 @@
 
 namespace App\Products\SchemaProviders;
 
+use App\GraphQL\Support\Facades\GraphQL;
 use App\Products\Models\Product;
 use App\Products\Models\ProductDescription;
 use App\Schemas\GraphQLType\Events\CreateGraphQLTypeSchemaEvent;
@@ -54,7 +55,7 @@ class ProductDescriptionSchemaProvider implements ModelSchemaProviderInterface, 
     public static function getGraphQLTypeSchema(): GraphQLTypeSchema
     {
         if (static::$graphqlTypeSchema === null) {
-            $schema = (new GraphQLTypeSchema())->fromModelSchema(static::getModelSchema());
+            $schema = GraphQL::getTypeSchemaFromModelSchema(static::getModelSchema());
 
             // TODO: Нужно ли общее событие, или схемы должны запускать свои индивидуальные события?
             // TODO: Класс модели может быть свойством схемы. С другой стороны, зачем схеме знать о модели, с которой она связана?
