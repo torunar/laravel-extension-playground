@@ -51,7 +51,7 @@ class GraphQLTypeSchemaTest extends TestCase
      */
     public function testCreateFromModelSchema(ModelSchema $modelSchema, GraphQLTypeSchema $expected)
     {
-        $actual = GraphQLTypeSchema::createFromModelSchema($modelSchema);
+        $actual = (new GraphQLTypeSchema())->fromModelSchema($modelSchema);
 
         $this->assertEquals($expected, $actual);
     }

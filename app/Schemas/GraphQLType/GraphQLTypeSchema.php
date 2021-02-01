@@ -54,15 +54,11 @@ class GraphQLTypeSchema
         );
     }
 
-    public static function createFromModelSchema(ModelSchema $modelSchema)
+    public function fromModelSchema(ModelSchema $modelSchema)
     {
         $typeSchema = new static();
 
-        foreach ($modelSchema->getAttributes() as $attribute) {
-            // hidden attributes shouldn't be exposed to GraphQL types
-            if ($attribute->isHidden()) {
-                continue;
-            }
+        foreach ($modelSchema->getPublicAttributes() as $attribute) {
             $typeSchema->addAttribute(
                 new Attribute(
                     $attribute->getName(),
@@ -72,22 +68,22 @@ class GraphQLTypeSchema
             );
         }
 
+        $relationTypesThatProduceLists = [
+            HasMany::class,
+            HasOneOrMany::class,
+            HasManyThrough::class,
+            BelongsToMany::class,
+            MorphMany::class,
+            MorphOneOrMany::class,
+            MorphToMany::class,
+        ];
+
         foreach ($modelSchema->getRelations() as $relation) {
             $resolver = $relation->getResolver();
             $relationType = (new \ReflectionFunction($resolver))->getReturnType();
             if (!$relationType) {
                 continue;
             }
-
-            $relationTypesThatProduceLists = [
-                HasMany::class,
-                HasOneOrMany::class,
-                HasManyThrough::class,
-                BelongsToMany::class,
-                MorphMany::class,
-                MorphOneOrMany::class,
-                MorphToMany::class,
-            ];
 
             if (in_array($relationType->getName(), $relationTypesThatProduceLists)) {
                 $typeSchema->addAttribute(

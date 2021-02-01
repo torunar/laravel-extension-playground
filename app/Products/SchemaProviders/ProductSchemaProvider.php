@@ -53,7 +53,7 @@ class ProductSchemaProvider implements ModelSchemaProviderInterface, GraphQLType
     public static function getGraphQLTypeSchema(): GraphQLTypeSchema
     {
         if (static::$graphqlTypeSchema === null) {
-            $schema = GraphQLTypeSchema::createFromModelSchema(static::getModelSchema());
+            $schema = (new GraphQLTypeSchema())->fromModelSchema(static::getModelSchema());
 
             // TODO: Нужно ли общее событие, или схемы должны запускать свои индивидуальные события?
             // TODO: Класс модели может быть свойством схемы. С другой стороны, зачем схеме знать о модели, с которой она связана?

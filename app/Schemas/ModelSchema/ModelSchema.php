@@ -113,4 +113,17 @@ class ModelSchema
 
         return null;
     }
+
+    /**
+     * @return array<string, \App\Schemas\ModelSchema\Attribute>
+     */
+    public function getPublicAttributes(): array
+    {
+        return array_filter(
+            $this->getAttributes(),
+            static function (Attribute $attribute) {
+                return !$attribute->isHidden();
+            }
+        );
+    }
 }
