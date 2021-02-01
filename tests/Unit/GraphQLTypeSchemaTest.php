@@ -4,6 +4,7 @@ namespace Tests\Unit;
 
 use App\GraphQL\Services\GraphQLService;
 use App\GraphQL\Support\Facades\GraphQL;
+use App\Schemas\GraphQLType\Attribute;
 use App\Schemas\GraphQLType\Attribute as TypeAttr;
 use App\Schemas\GraphQLType\GraphQLTypeSchema;
 use App\Schemas\ModelSchema\Attribute as ModelAttr;
@@ -55,6 +56,21 @@ class GraphQLTypeSchemaTest extends TestCase
         $this->assertEquals($expected, $actual);
     }
 
+    public function testWithAttribute()
+    {
+        $initialModel = (new GraphQLTypeSchema())->addAttribute(new Attribute('foo', GraphQL::type('int'), 'foo'));
+
+        $this->assertEquals(
+            (new GraphQLTypeSchema())->addAttribute(new Attribute('foo', GraphQL::type('string'), 'foo')),
+            $initialModel->withAttribute(new Attribute('foo', GraphQL::type('string'), 'foo')),
+        );
+
+        $this->assertEquals(
+            (new GraphQLTypeSchema())->addAttribute(new Attribute('foo', GraphQL::type('int'), 'foo')),
+            $initialModel,
+        );
+    }
+
     public function dpCreateFromModelSchema()
     {
         $this->bootstrapGraphQLService();
@@ -92,9 +108,8 @@ class GraphQLTypeSchemaTest extends TestCase
                     ->addAttribute(new ModelAttr('foo', new PrimitiveAttributeType('int'), true, false))
                     ->addRelation(
                         new Relation(
-                            'rel_bar', Bar::class, static function (Foo $foo): HasOne {
-                            return $foo->hasOne(Bar::class);
-                        })
+                            'rel_bar', Bar::class, static function (Foo $f): HasOne { return $f->hasOne(Bar::class); }
+                        )
                     ),
                 (new GraphQLTypeSchema())
                     ->addAttribute(new TypeAttr('foo', Type::int(), 'foo'))
@@ -106,9 +121,8 @@ class GraphQLTypeSchemaTest extends TestCase
                     ->addAttribute(new ModelAttr('foo', new PrimitiveAttributeType('int'), true, false))
                     ->addRelation(
                         new Relation(
-                            'rel_bar', Bar::class, static function (Foo $foo): HasMany {
-                            return $foo->HasMany(Bar::class);
-                        })
+                            'rel_bar', Bar::class, static function (Foo $f): HasMany { return $f->HasMany(Bar::class); }
+                        )
                     ),
                 (new GraphQLTypeSchema())
                     ->addAttribute(new TypeAttr('foo', Type::int(), 'foo'))
@@ -120,12 +134,11 @@ class GraphQLTypeSchemaTest extends TestCase
                     ->addAttribute(new ModelAttr('foo', new PrimitiveAttributeType('int'), true, false))
                     ->addRelation(
                         new Relation(
-                            'rel_bar', Bar::class, static function (Foo $foo) {
-                            return $foo->HasMany(Bar::class);
-                        })
+                            'rel_bar', Bar::class, static function (Foo $f) { return $f->HasMany(Bar::class); }
+                        )
                     ),
                 (new GraphQLTypeSchema())
-                    ->addAttribute(new TypeAttr('foo', Type::int(), 'foo'))
+                    ->addAttribute(new TypeAttr('foo', Type::int(), 'foo')),
             ],
         ];
     }
