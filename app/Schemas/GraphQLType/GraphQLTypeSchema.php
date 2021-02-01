@@ -18,6 +18,16 @@ class GraphQLTypeSchema
     /** @var array<string, \App\Schemas\GraphQLType\Attribute> */
     private $attributes;
 
+    const RELATION_TYPES_THAT_PRODUCE_LISTS = [
+        HasMany::class,
+        HasOneOrMany::class,
+        HasManyThrough::class,
+        BelongsToMany::class,
+        MorphMany::class,
+        MorphOneOrMany::class,
+        MorphToMany::class,
+    ];
+
     public function __construct(array $attributes = [])
     {
         $this->attributes = $attributes;
@@ -68,24 +78,13 @@ class GraphQLTypeSchema
             );
         }
 
-        $relationTypesThatProduceLists = [
-            HasMany::class,
-            HasOneOrMany::class,
-            HasManyThrough::class,
-            BelongsToMany::class,
-            MorphMany::class,
-            MorphOneOrMany::class,
-            MorphToMany::class,
-        ];
-
         foreach ($modelSchema->getRelations() as $relation) {
-            $resolver = $relation->getResolver();
-            $relationType = (new \ReflectionFunction($resolver))->getReturnType();
+            $relationType = $relation->getType();
             if (!$relationType) {
                 continue;
             }
 
-            if (in_array($relationType->getName(), $relationTypesThatProduceLists)) {
+            if (in_array($relationType, self::RELATION_TYPES_THAT_PRODUCE_LISTS)) {
                 $typeSchema->addAttribute(
                     new Attribute(
                         $relation->getName(),
