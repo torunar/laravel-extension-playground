@@ -9,10 +9,16 @@ class ModelSchema
     private string $keyName;
 
     /** @var array<string, \App\Schemas\ModelSchema\Attribute> */
-    private array $attributes = [];
+    private array $attributes;
 
     /** @var array<string, \App\Schemas\ModelSchema\Relation> */
-    private array $relations = [];
+    private array $relations;
+
+    public function __construct(array $attributes = [], array $relations = [])
+    {
+        $this->attributes = $attributes;
+        $this->relations = $relations;
+    }
 
     public function setTableName(string $tableName): self
     {
@@ -72,5 +78,39 @@ class ModelSchema
     public function getRelations(): array
     {
         return $this->relations;
+    }
+
+    public function withAttribute(Attribute $attribute): self
+    {
+        $attributes = $this->getAttributes();
+        $attributes[$attribute->getName()] = $attribute;
+
+        return new static($attributes, $this->getRelations());
+    }
+
+    public function withRelation(Relation $relation): self
+    {
+        $relations = $this->getRelations();
+        $relations[$relation->getName()] = $relation;
+
+        return new static($this->getAttributes(), $relations);
+    }
+
+    public function getAttribute(string $name): ?Attribute
+    {
+        if (isset($this->attributes[$name])) {
+            return $this->attributes[$name];
+        }
+
+        return null;
+    }
+
+    public function getRelation(string $name): ?Relation
+    {
+        if (isset($this->relations[$name])) {
+            return $this->relations[$name];
+        }
+
+        return null;
     }
 }

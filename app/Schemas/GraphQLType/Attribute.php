@@ -64,4 +64,40 @@ class Attribute
     {
         return $this->privacy;
     }
+
+    public function withDescription(string $description): self
+    {
+        return new static(
+            $this->getName(),
+            $this->getType(),
+            $description,
+            $this->getPrivacy(),
+            $this->getResolver(),
+            $this->isSelectable(),
+        );
+    }
+
+    public function withResolver(?Closure $resolver): self
+    {
+        return new static(
+            $this->getName(),
+            $this->getType(),
+            $this->getDescription(),
+            $this->getPrivacy(),
+            $resolver,
+            $this->isSelectable()
+        );
+    }
+
+    public function withPrivacy(?Closure $privacy): self
+    {
+        return new static(
+            $this->getName(),
+            $this->getType(),
+            $this->getDescription(),
+            $privacy,
+            $this->getResolver(),
+            $this->isSelectable(),
+        );
+    }
 }
