@@ -100,12 +100,8 @@ return [
     //
     'schemas' => [
         'default' => [
-            'query' => [
-                \App\Products\GraphQL\Queries\GetProductsQuery::class,
-            ],
-            'mutation' => [
-                // 'example_mutation'  => ExampleMutation::class,
-            ],
+            'query' => [],
+            'mutation' => [],
             'middleware' => [],
             'method' => ['get', 'post'],
         ],
@@ -120,8 +116,7 @@ return [
     //     'user' => 'App\GraphQL\Type\UserType'
     // ]
     //
-    'types' => [
-    ],
+    'types' => [],
 
     // The types will be loaded on demand. Default is to load all types on each request
     // Can increase performance on schemes with many types

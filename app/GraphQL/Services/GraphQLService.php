@@ -59,6 +59,24 @@ class GraphQLService
         return $this;
     }
 
+    public function registerQuery(string $queryClass): self
+    {
+        $this->graphQL->addSchema('default', [
+            'query' => [$queryClass],
+        ]);
+
+        return $this;
+    }
+
+    public function registerMutation(string $mutationClass): self
+    {
+        $this->graphQL->addSchema('default', [
+            'mutation' => [$mutationClass],
+        ]);
+
+        return $this;
+    }
+
     public function getTypeSchemaFromModelSchema(ModelSchema $modelSchema): GraphQLTypeSchema
     {
         $typeSchema = new GraphQLTypeSchema();
@@ -92,5 +110,27 @@ class GraphQLService
         }
 
         return $typeSchema;
+    }
+
+    public function hasQuery(string $queryClass): bool
+    {
+        $schemas = $this->graphQL->getSchemas();
+
+        return in_array($queryClass, $schemas['default']['query']);
+    }
+
+    public function hasMutation(string $mutationClass): bool
+    {
+        $schemas = $this->graphQL->getSchemas();
+
+        return in_array($mutationClass, $schemas['default']['mutation']);
+    }
+
+    public function hasType(string $typeClass): bool
+    {
+        $types = $this->graphQL->getTypes();
+        $resolvedType = $this->typeResolver->resolve($typeClass);
+
+        return isset($types[$resolvedType]);
     }
 }

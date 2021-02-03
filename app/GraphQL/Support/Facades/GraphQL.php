@@ -13,6 +13,10 @@ use Illuminate\Support\Facades\Facade;
  * @see \App\GraphQL\Services\GraphQLService::registerType
  * @method static \App\Schemas\GraphQLTypeSchema\GraphQLTypeSchema getTypeSchemaFromModelSchema(ModelSchema $modelSchema)
  * @see \App\GraphQL\Services\GraphQLService::getTypeSchemaFromModelSchema
+ * @method static \App\GraphQL\Services\GraphQLService registerQuery(string $queryClass)
+ * @see \App\GraphQL\Services\GraphQLService::registerQuery
+ * @method static \App\GraphQL\Services\GraphQLService registerMutation(string $mutationClass)
+ * @see \App\GraphQL\Services\GraphQLService::registerMutation
  */
 class GraphQL extends Facade
 {

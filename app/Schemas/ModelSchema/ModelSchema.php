@@ -14,6 +14,12 @@ class ModelSchema
     /** @var array<string, \App\Schemas\ModelSchema\Relation> */
     private array $relations;
 
+    /**
+     * ModelSchema constructor.
+     *
+     * @param array<string, \App\Schemas\ModelSchema\Attribute> $attributes
+     * @param array<string, \App\Schemas\ModelSchema\Relation>  $relations
+     */
     public function __construct(array $attributes = [], array $relations = [])
     {
         $this->attributes = [];

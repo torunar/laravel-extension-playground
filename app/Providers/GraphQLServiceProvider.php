@@ -5,8 +5,10 @@ namespace App\Providers;
 use App\GraphQL\Services\GraphQLService;
 use App\GraphQL\Support\Facades\GraphQL;
 use App\GraphQL\TypeResolver;
+use App\Products\GraphQL\Queries\GetProductsQuery;
 use App\Products\GraphQL\Types\ProductDescriptionType;
 use App\Products\GraphQL\Types\ProductType;
+use Closure;
 use Illuminate\Contracts\Container\Container;
 use Illuminate\Support\ServiceProvider;
 
@@ -31,5 +33,6 @@ class GraphQLServiceProvider extends ServiceProvider
     {
         GraphQL::registerType(ProductType::class);
         GraphQL::registerType(ProductDescriptionType::class);
+        GraphQL::registerQuery(GetProductsQuery::class);
     }
 }

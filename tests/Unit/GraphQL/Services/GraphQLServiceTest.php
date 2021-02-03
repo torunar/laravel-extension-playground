@@ -3,7 +3,6 @@
 namespace Tests\Unit\GraphQL\Services;
 
 use App\GraphQL\Services\GraphQLService;
-use App\GraphQL\Support\Facades\GraphQL;
 use App\Schemas\GraphQLTypeSchema\Attribute as TypeAttr;
 use App\Schemas\GraphQLTypeSchema\GraphQLTypeSchema;
 use App\Schemas\ModelSchema\Attribute as ModelAttr;
@@ -15,6 +14,8 @@ use GraphQL\Type\Definition\Type;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use Rebing\GraphQL\Support\Mutation;
+use Rebing\GraphQL\Support\Query;
 use Rebing\GraphQL\Support\Type as GraphQLType;
 use Tests\CreatesApplication;
 use Tests\TestCase;
@@ -27,38 +28,139 @@ class Bar extends Model
 {
 }
 
+class FooType extends GraphQLType
+{
+    protected $attributes = [
+        'name'        => 'foo',
+        'model'       => Foo::class,
+    ];
+}
+
 class BarType extends GraphQLType
 {
     protected $attributes = [
-        'name'        => 'Bar',
-        'description' => 'Bar',
+        'name'        => 'bar',
         'model'       => Bar::class,
     ];
+}
+
+class FooQuery extends Query
+{
+    protected $attributes = [
+        'name' => 'FooQuery',
+    ];
+
+    public function type(): Type
+    {
+        return Type::int();
+    }
+}
+
+class BarQuery extends Query
+{
+    protected $attributes = [
+        'name' => 'BarQuery',
+    ];
+
+    public function type(): Type
+    {
+        return Type::int();
+    }
+}
+
+class FooMutation extends Mutation
+{
+    protected $attributes = [
+        'name' => 'FooMutation',
+    ];
+
+    public function type(): Type
+    {
+        return Type::int();
+    }
+}
+
+class BarMutation extends Mutation
+{
+    protected $attributes = [
+        'name' => 'BarMutation',
+    ];
+
+    public function type(): Type
+    {
+        return Type::int();
+    }
 }
 
 class GraphQLServiceTest extends TestCase
 {
     use CreatesApplication;
 
-    protected function setUp(): void
-    {
-        parent::setUp();
-        $this->bootstrapGraphQLService();
-    }
-
     /**
      * @dataProvider dpCreateFromModelSchema
      */
     public function testCreateFromModelSchema(ModelSchema $modelSchema, GraphQLTypeSchema $expected)
     {
-        $actual = GraphQL::getTypeSchemaFromModelSchema($modelSchema);
+        $gql = $this->getGraphQLService();
+        $gql->registerType(BarType::class);
+
+        $actual = $gql->getTypeSchemaFromModelSchema($modelSchema);
 
         $this->assertEquals($expected, $actual);
     }
 
+    public function testRegisterQuery()
+    {
+        $gql = $this->getGraphQLService();
+
+        $this->assertFalse($gql->hasQuery(FooQuery::class));
+        $this->assertFalse($gql->hasQuery(BarQuery::class));
+
+        $gql->registerQuery(FooQuery::class);
+        $this->assertTrue($gql->hasQuery(FooQuery::class));
+        $this->assertFalse($gql->hasQuery(BarQuery::class));
+
+        $gql->registerQuery(BarQuery::class);
+        $this->assertTrue($gql->hasQuery(FooQuery::class));
+        $this->assertTrue($gql->hasQuery(BarQuery::class));
+    }
+
+    public function testRegisterMutation()
+    {
+        $gql = $this->getGraphQLService();
+
+        $this->assertFalse($gql->hasMutation(FooMutation::class));
+        $this->assertFalse($gql->hasMutation(BarMutation::class));
+
+        $gql->registerMutation(FooMutation::class);
+        $this->assertTrue($gql->hasMutation(FooMutation::class));
+        $this->assertFalse($gql->hasMutation(BarMutation::class));
+
+        $gql->registerMutation(BarMutation::class);
+        $this->assertTrue($gql->hasMutation(FooMutation::class));
+        $this->assertTrue($gql->hasMutation(BarMutation::class));
+    }
+
+    public function testRegisterType()
+    {
+        $gql = $this->getGraphQLService();
+
+        $this->assertFalse($gql->hasType(FooType::class));
+        $this->assertFalse($gql->hasType(BarType::class));
+
+        $gql->registerType(FooType::class);
+        $this->assertTrue($gql->hasType(FooType::class));
+        $this->assertFalse($gql->hasType(BarType::class));
+
+        $gql->registerType(BarType::class);
+        $this->assertTrue($gql->hasType(FooType::class));
+        $this->assertTrue($gql->hasType(BarType::class));
+    }
+
     public function dpCreateFromModelSchema()
     {
-        $this->bootstrapGraphQLService();
+        $gql = $this->getGraphQLService();
+        $gql->registerType(BarType::class);
 
         return [
             // empty model
@@ -94,7 +196,7 @@ class GraphQLServiceTest extends TestCase
                     ->addRelation(new Relation('rel_bar', new SimpleRelationResolver(Bar::class, HasOne::class))),
                 (new GraphQLTypeSchema())
                     ->addAttribute(new TypeAttr('foo', Type::int()))
-                    ->addAttribute(new TypeAttr('rel_bar', GraphQL::type(BarType::class))),
+                    ->addAttribute(new TypeAttr('rel_bar', $gql->type(BarType::class))),
             ],
             // model with relation one-to-many
             [
@@ -103,16 +205,14 @@ class GraphQLServiceTest extends TestCase
                     ->addRelation(new Relation('rel_bar', new SimpleRelationResolver(Bar::class, HasMany::class))),
                 (new GraphQLTypeSchema())
                     ->addAttribute(new TypeAttr('foo', Type::int()))
-                    ->addAttribute(new TypeAttr('rel_bar', Type::listOf(GraphQL::type(BarType::class)))),
+                    ->addAttribute(new TypeAttr('rel_bar', Type::listOf($gql->type(BarType::class)))),
             ],
         ];
     }
 
-    private function bootstrapGraphQLService()
+    private function getGraphQLService(): GraphQLService
     {
-        /** @var GraphQLService $gql */
-        $this->createApplication()
-            ->make(GraphQLService::class)
-            ->registerType(BarType::class);
+        return $this->createApplication()
+            ->make(GraphQLService::class);
     }
 }
