@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Unit\Services;
+namespace Tests\Unit\GraphQL\Services;
 
 use App\GraphQL\Services\GraphQLService;
 use App\GraphQL\Support\Facades\GraphQL;
