@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Schemas\GraphQLType;
+namespace App\Schemas\GraphQLTypeSchema;
 
 use Closure;
 use GraphQL\Type\Definition\Type;

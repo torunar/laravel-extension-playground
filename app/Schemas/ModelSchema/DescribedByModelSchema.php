@@ -31,7 +31,7 @@ trait DescribedByModelSchema
                 }
 
                 foreach ($modelSchema->getRelations() as $relation) {
-                    static::resolveRelationUsing($relation->getName(), $relation->getResolver());
+                    static::resolveRelationUsing($relation->getName(), $relation->getResolveCallback());
                 }
             }
         );

@@ -1,10 +1,10 @@
 <?php
 
-namespace Tests\Unit;
+namespace Tests\Unit\Schemas\GraphQLTypeSchema;
 
 use App\GraphQL\Support\Facades\GraphQL;
-use App\Schemas\GraphQLType\Attribute;
-use App\Schemas\GraphQLType\GraphQLTypeSchema;
+use App\Schemas\GraphQLTypeSchema\Attribute;
+use App\Schemas\GraphQLTypeSchema\GraphQLTypeSchema;
 use Tests\TestCase;
 
 class GraphQLTypeSchemaTest extends TestCase

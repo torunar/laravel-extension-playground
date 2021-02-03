@@ -3,8 +3,8 @@
 namespace App\GraphQL\Services;
 
 use App\GraphQL\TypeResolver;
-use App\Schemas\GraphQLType\Attribute;
-use App\Schemas\GraphQLType\GraphQLTypeSchema;
+use App\Schemas\GraphQLTypeSchema\Attribute;
+use App\Schemas\GraphQLTypeSchema\GraphQLTypeSchema;
 use App\Schemas\ModelSchema\ModelSchema;
 use GraphQL\Type\Definition\Type;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -75,15 +75,11 @@ class GraphQLService
 
         foreach ($modelSchema->getRelations() as $relation) {
             $relationType = $relation->getType();
-            if (!$relationType) {
-                continue;
-            }
-
             if (in_array($relationType, self::RELATION_TYPES_THAT_PRODUCE_LISTS)) {
                 $typeSchema->addAttribute(
                     new Attribute(
                         $relation->getName(),
-                        Type::listOf($this->type($relation->getRelatedEntity())),
+                        Type::listOf($this->type($relation->getRelatedModel())),
                         $relation->getName(),
                     )
                 );
@@ -91,7 +87,7 @@ class GraphQLService
                 $typeSchema->addAttribute(
                     new Attribute(
                         $relation->getName(),
-                        $this->type($relation->getRelatedEntity()),
+                        $this->type($relation->getRelatedModel()),
                         $relation->getName(),
                     )
                 );

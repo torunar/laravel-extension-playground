@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Schemas\GraphQLType;
+namespace App\Schemas\GraphQLTypeSchema;
 
 class GraphQLTypeSchema
 {
-    /** @var array<string, \App\Schemas\GraphQLType\Attribute> */
+    /** @var array<string, \App\Schemas\GraphQLTypeSchema\Attribute> */
     private $attributes;
 
     public function __construct(array $attributes = [])
@@ -20,7 +20,7 @@ class GraphQLTypeSchema
     }
 
     /**
-     * @return array<string, \App\Schemas\GraphQLType\Attribute>
+     * @return array<string, \App\Schemas\GraphQLTypeSchema\Attribute>
      */
     public function getAttributes(): array
     {

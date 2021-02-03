@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Unit;
+namespace Tests\Unit\Schemas\ModelSchema;
 
 use App\Schemas\ModelSchema\Attribute;
 use App\Schemas\ModelSchema\AttributeTypes\CastedAttributeType;
@@ -8,6 +8,7 @@ use App\Schemas\ModelSchema\AttributeTypes\PrimitiveAttributeType;
 use App\Schemas\ModelSchema\DescribedByModelSchema;
 use App\Schemas\ModelSchema\ModelSchema;
 use App\Schemas\ModelSchema\Relation;
+use App\Schemas\ModelSchema\RelationResolvers\SimpleRelationResolver;
 use Illuminate\Contracts\Database\Eloquent\CastsAttributes;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -55,14 +56,7 @@ class ModelSchemaTest extends TestCase
             ->addAttribute(new Attribute('emoji', new CastedAttributeType(EmojiCaster::class)))
             ->addAttribute(new Attribute('hidden', new PrimitiveAttributeType('string'), true, true))
             ->addAttribute(new Attribute('secret', new PrimitiveAttributeType('string'), false))
-            ->addRelation(
-                new Relation(
-                    'dependencies',
-                    static function (FakeModel $model) {
-                        return $model->hasMany(FakeModel::class);
-                    }
-                )
-            );
+            ->addRelation(new Relation('dependencies', new SimpleRelationResolver(FakeModel::class, HasMany::class)));
 
         FakeModel::setModelSchema($modelSchema);
     }

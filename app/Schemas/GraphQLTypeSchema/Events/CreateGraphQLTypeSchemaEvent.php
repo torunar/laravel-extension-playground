@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Schemas\GraphQLType\Events;
+namespace App\Schemas\GraphQLTypeSchema\Events;
 
-use App\Schemas\GraphQLType\GraphQLTypeSchema;
+use App\Schemas\GraphQLTypeSchema\GraphQLTypeSchema;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Foundation\Events\Dispatchable;

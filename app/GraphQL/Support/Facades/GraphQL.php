@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Facade;
  * @see \App\GraphQL\Services\GraphQLService::type
  * @method static \App\GraphQL\Services\GraphQLService registerType(string $typeClass)
  * @see \App\GraphQL\Services\GraphQLService::registerType
- * @method static \App\Schemas\GraphQLType\GraphQLTypeSchema getTypeSchemaFromModelSchema(ModelSchema $modelSchema)
+ * @method static \App\Schemas\GraphQLTypeSchema\GraphQLTypeSchema getTypeSchemaFromModelSchema(ModelSchema $modelSchema)
  * @see \App\GraphQL\Services\GraphQLService::getTypeSchemaFromModelSchema
  */
 class GraphQL extends Facade

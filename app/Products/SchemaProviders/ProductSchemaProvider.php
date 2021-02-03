@@ -5,15 +5,16 @@ namespace App\Products\SchemaProviders;
 use App\GraphQL\Support\Facades\GraphQL;
 use App\Products\Models\Product;
 use App\Products\Models\ProductDescription;
-use App\Schemas\GraphQLType\Events\CreateGraphQLTypeSchemaEvent;
-use App\Schemas\GraphQLType\GraphQLTypeSchema;
-use App\Schemas\GraphQLType\GraphQLTypeSchemaProviderInterface;
+use App\Schemas\GraphQLTypeSchema\Events\CreateGraphQLTypeSchemaEvent;
+use App\Schemas\GraphQLTypeSchema\GraphQLTypeSchema;
+use App\Schemas\GraphQLTypeSchema\GraphQLTypeSchemaProviderInterface;
 use App\Schemas\ModelSchema\Attribute as ModelAttribute;
 use App\Schemas\ModelSchema\AttributeTypes\PrimitiveAttributeType;
 use App\Schemas\ModelSchema\Events\CreateModelSchemaEvent;
 use App\Schemas\ModelSchema\ModelSchema;
 use App\Schemas\ModelSchema\ModelSchemaProviderInterface;
 use App\Schemas\ModelSchema\Relation;
+use App\Schemas\ModelSchema\RelationResolvers\SimpleRelationResolver;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class ProductSchemaProvider implements ModelSchemaProviderInterface, GraphQLTypeSchemaProviderInterface
@@ -34,10 +35,7 @@ class ProductSchemaProvider implements ModelSchemaProviderInterface, GraphQLType
                 ->addRelation(
                     new Relation(
                         'product_descriptions',
-                        ProductDescription::class,
-                        static function (Product $product): HasMany {
-                            return $product->hasMany(ProductDescription::class);
-                        }
+                        new SimpleRelationResolver(ProductDescription::class, HasMany::class),
                     )
                 );
 

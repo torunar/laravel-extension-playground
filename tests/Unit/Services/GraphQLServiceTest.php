@@ -1,15 +1,16 @@
 <?php
 
-namespace Tests\Unit;
+namespace Tests\Unit\Services;
 
 use App\GraphQL\Services\GraphQLService;
 use App\GraphQL\Support\Facades\GraphQL;
-use App\Schemas\GraphQLType\Attribute as TypeAttr;
-use App\Schemas\GraphQLType\GraphQLTypeSchema;
+use App\Schemas\GraphQLTypeSchema\Attribute as TypeAttr;
+use App\Schemas\GraphQLTypeSchema\GraphQLTypeSchema;
 use App\Schemas\ModelSchema\Attribute as ModelAttr;
 use App\Schemas\ModelSchema\AttributeTypes\PrimitiveAttributeType;
 use App\Schemas\ModelSchema\ModelSchema;
 use App\Schemas\ModelSchema\Relation;
+use App\Schemas\ModelSchema\RelationResolvers\SimpleRelationResolver;
 use GraphQL\Type\Definition\Type;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -90,11 +91,7 @@ class GraphQLServiceTest extends TestCase
             [
                 (new ModelSchema())
                     ->addAttribute(new ModelAttr('foo', new PrimitiveAttributeType('int'), true, false))
-                    ->addRelation(
-                        new Relation(
-                            'rel_bar', Bar::class, static function (Foo $f): HasOne { return $f->hasOne(Bar::class); }
-                        )
-                    ),
+                    ->addRelation(new Relation('rel_bar', new SimpleRelationResolver(Bar::class, HasOne::class))),
                 (new GraphQLTypeSchema())
                     ->addAttribute(new TypeAttr('foo', Type::int(), 'foo'))
                     ->addAttribute(new TypeAttr('rel_bar', GraphQL::type(BarType::class), 'rel_bar')),
@@ -103,26 +100,10 @@ class GraphQLServiceTest extends TestCase
             [
                 (new ModelSchema())
                     ->addAttribute(new ModelAttr('foo', new PrimitiveAttributeType('int'), true, false))
-                    ->addRelation(
-                        new Relation(
-                            'rel_bar', Bar::class, static function (Foo $f): HasMany { return $f->HasMany(Bar::class); }
-                        )
-                    ),
+                    ->addRelation(new Relation('rel_bar', new SimpleRelationResolver(Bar::class, HasMany::class))),
                 (new GraphQLTypeSchema())
                     ->addAttribute(new TypeAttr('foo', Type::int(), 'foo'))
                     ->addAttribute(new TypeAttr('rel_bar', Type::listOf(GraphQL::type(BarType::class)), 'rel_bar')),
-            ],
-            // model with relations without type-hinting
-            [
-                (new ModelSchema())
-                    ->addAttribute(new ModelAttr('foo', new PrimitiveAttributeType('int'), true, false))
-                    ->addRelation(
-                        new Relation(
-                            'rel_bar', Bar::class, static function (Foo $f) { return $f->HasMany(Bar::class); }
-                        )
-                    ),
-                (new GraphQLTypeSchema())
-                    ->addAttribute(new TypeAttr('foo', Type::int(), 'foo')),
             ],
         ];
     }

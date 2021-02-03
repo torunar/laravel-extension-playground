@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Unit;
+namespace Tests\Unit\Schemas\ValidationSchema;
 
 use App\Schemas\ValidationSchema\ValidationSchema;
 use App\Schemas\ValidationSchema\RuleTypes\ClosureRuleType;

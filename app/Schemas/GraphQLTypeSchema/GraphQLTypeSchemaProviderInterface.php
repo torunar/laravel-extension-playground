@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Schemas\GraphQLType;
+namespace App\Schemas\GraphQLTypeSchema;
 
 interface GraphQLTypeSchemaProviderInterface
 {

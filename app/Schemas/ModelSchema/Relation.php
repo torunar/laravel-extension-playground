@@ -3,24 +3,17 @@
 namespace App\Schemas\ModelSchema;
 
 use Closure;
-use ReflectionFunction;
 
 class Relation
 {
     private string $name;
 
-    protected string $relatedEntity;
+    private RelationResolverInterface $resolver;
 
-    private Closure $resolver;
-
-    protected ?string $type;
-
-    public function __construct(string $name, string $relatedEntity, Closure $resolver, string $type = null)
+    public function __construct(string $name, RelationResolverInterface $resolver)
     {
         $this->name = $name;
-        $this->relatedEntity = $relatedEntity;
         $this->resolver = $resolver;
-        $this->type = $type;
     }
 
     public function getName(): string
@@ -28,28 +21,18 @@ class Relation
         return $this->name;
     }
 
-    public function getRelatedEntity(): string
+    public function getRelatedModel(): string
     {
-        return $this->relatedEntity;
+        return $this->resolver->getRelatedModel();
     }
 
-    public function getResolver(): Closure
+    public function getResolveCallback(): Closure
     {
-        return $this->resolver;
+        return $this->resolver->getResolver();
     }
 
-    public function getType(): ?string
+    public function getType(): string
     {
-        if ($this->type) {
-            return $this->type;
-        }
-
-        $resolver = $this->getResolver();
-        $relationType = (new ReflectionFunction($resolver))->getReturnType();
-        if ($relationType) {
-            return $this->type = $relationType->getName();
-        }
-
-        return null;
+        return $this->resolver->getType();
     }
 }
