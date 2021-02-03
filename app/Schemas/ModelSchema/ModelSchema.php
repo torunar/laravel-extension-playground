@@ -16,8 +16,14 @@ class ModelSchema
 
     public function __construct(array $attributes = [], array $relations = [])
     {
-        $this->attributes = $attributes;
-        $this->relations = $relations;
+        $this->attributes = [];
+        foreach ($attributes as $attribute) {
+            $this->addAttribute($attribute);
+        }
+        $this->relations = [];
+        foreach ($relations as $relation) {
+            $this->addRelation($relation);
+        }
     }
 
     public function setTableName(string $tableName): self

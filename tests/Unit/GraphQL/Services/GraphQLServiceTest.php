@@ -73,9 +73,9 @@ class GraphQLServiceTest extends TestCase
                     ->addAttribute(new ModelAttr('bar', new PrimitiveAttributeType('boolean')))
                     ->addAttribute(new ModelAttr('baz', new PrimitiveAttributeType('string'))),
                 (new GraphQLTypeSchema())
-                    ->addAttribute(new TypeAttr('foo', Type::int(), 'foo'))
-                    ->addAttribute(new TypeAttr('bar', Type::boolean(), 'bar'))
-                    ->addAttribute(new TypeAttr('baz', Type::string(), 'baz')),
+                    ->addAttribute(new TypeAttr('foo', Type::int()))
+                    ->addAttribute(new TypeAttr('bar', Type::boolean()))
+                    ->addAttribute(new TypeAttr('baz', Type::string())),
             ],
             // model with hidden attributes
             [
@@ -84,8 +84,8 @@ class GraphQLServiceTest extends TestCase
                     ->addAttribute(new ModelAttr('bar', new PrimitiveAttributeType('boolean'), true, false))
                     ->addAttribute(new ModelAttr('baz', new PrimitiveAttributeType('string'), true, true)),
                 (new GraphQLTypeSchema())
-                    ->addAttribute(new TypeAttr('foo', Type::int(), 'foo'))
-                    ->addAttribute(new TypeAttr('bar', Type::boolean(), 'bar')),
+                    ->addAttribute(new TypeAttr('foo', Type::int()))
+                    ->addAttribute(new TypeAttr('bar', Type::boolean())),
             ],
             // model with relation one-to-one
             [
@@ -93,8 +93,8 @@ class GraphQLServiceTest extends TestCase
                     ->addAttribute(new ModelAttr('foo', new PrimitiveAttributeType('int'), true, false))
                     ->addRelation(new Relation('rel_bar', new SimpleRelationResolver(Bar::class, HasOne::class))),
                 (new GraphQLTypeSchema())
-                    ->addAttribute(new TypeAttr('foo', Type::int(), 'foo'))
-                    ->addAttribute(new TypeAttr('rel_bar', GraphQL::type(BarType::class), 'rel_bar')),
+                    ->addAttribute(new TypeAttr('foo', Type::int()))
+                    ->addAttribute(new TypeAttr('rel_bar', GraphQL::type(BarType::class))),
             ],
             // model with relation one-to-many
             [
@@ -102,8 +102,8 @@ class GraphQLServiceTest extends TestCase
                     ->addAttribute(new ModelAttr('foo', new PrimitiveAttributeType('int'), true, false))
                     ->addRelation(new Relation('rel_bar', new SimpleRelationResolver(Bar::class, HasMany::class))),
                 (new GraphQLTypeSchema())
-                    ->addAttribute(new TypeAttr('foo', Type::int(), 'foo'))
-                    ->addAttribute(new TypeAttr('rel_bar', Type::listOf(GraphQL::type(BarType::class)), 'rel_bar')),
+                    ->addAttribute(new TypeAttr('foo', Type::int()))
+                    ->addAttribute(new TypeAttr('rel_bar', Type::listOf(GraphQL::type(BarType::class)))),
             ],
         ];
     }

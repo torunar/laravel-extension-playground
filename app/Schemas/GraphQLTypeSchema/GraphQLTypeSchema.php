@@ -9,7 +9,10 @@ class GraphQLTypeSchema
 
     public function __construct(array $attributes = [])
     {
-        $this->attributes = $attributes;
+        $this->attributes = [];
+        foreach ($attributes as $attribute) {
+            $this->addAttribute($attribute);
+        }
     }
 
     public function addAttribute(Attribute $attribute): self

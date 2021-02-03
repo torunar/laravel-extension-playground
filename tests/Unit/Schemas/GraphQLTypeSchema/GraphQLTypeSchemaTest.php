@@ -11,16 +11,16 @@ class GraphQLTypeSchemaTest extends TestCase
 {
     public function testWithAttribute()
     {
-        $initialModel = (new GraphQLTypeSchema())->addAttribute(new Attribute('foo', GraphQL::type('int'), 'foo'));
+        $initialSchema = new GraphQLTypeSchema([new Attribute('foo', GraphQL::type('int'))]);
 
         $this->assertEquals(
-            (new GraphQLTypeSchema())->addAttribute(new Attribute('foo', GraphQL::type('string'), 'foo')),
-            $initialModel->withAttribute(new Attribute('foo', GraphQL::type('string'), 'foo')),
+            new GraphQLTypeSchema([new Attribute('foo', GraphQL::type('int')), new Attribute('bar', GraphQL::type('string'))]),
+            $initialSchema->withAttribute(new Attribute('bar', GraphQL::type('string'))),
         );
 
         $this->assertEquals(
-            (new GraphQLTypeSchema())->addAttribute(new Attribute('foo', GraphQL::type('int'), 'foo')),
-            $initialModel,
+            new GraphQLTypeSchema([new Attribute('foo', GraphQL::type('int'))]),
+            $initialSchema,
         );
     }
 }

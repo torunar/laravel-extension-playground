@@ -22,7 +22,7 @@ class Attribute
     public function __construct(
         string $name,
         Type $type,
-        string $description,
+        string $description = '',
         Closure $privacy = null,
         Closure $resolver = null,
         bool $isSelectable = true

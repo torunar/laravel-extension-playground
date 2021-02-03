@@ -68,7 +68,6 @@ class GraphQLService
                 new Attribute(
                     $attribute->getName(),
                     $this->type($attribute->getType()->getCast()),
-                    $attribute->getName(),
                 )
             );
         }
@@ -80,7 +79,6 @@ class GraphQLService
                     new Attribute(
                         $relation->getName(),
                         Type::listOf($this->type($relation->getRelatedModel())),
-                        $relation->getName(),
                     )
                 );
             } else {
@@ -88,7 +86,6 @@ class GraphQLService
                     new Attribute(
                         $relation->getName(),
                         $this->type($relation->getRelatedModel()),
-                        $relation->getName(),
                     )
                 );
             }
