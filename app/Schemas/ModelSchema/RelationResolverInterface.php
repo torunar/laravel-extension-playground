@@ -11,5 +11,5 @@ interface RelationResolverInterface
 
     public function getType(): string;
 
-    public function getResolver(): Closure;
+    public function getResolveCallback(): Closure;
 }

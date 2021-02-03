@@ -28,7 +28,7 @@ class Relation
 
     public function getResolveCallback(): Closure
     {
-        return $this->resolver->getResolver();
+        return $this->resolver->getResolveCallback();
     }
 
     public function getType(): string

@@ -28,7 +28,7 @@ class SimpleRelationResolver implements RelationResolverInterface
         return $this->type;
     }
 
-    public function getResolver(): Closure
+    public function getResolveCallback(): Closure
     {
         return function (Model $model) {
             $modelMethod = $this->getModelMethodByRelationClassName($this->type);

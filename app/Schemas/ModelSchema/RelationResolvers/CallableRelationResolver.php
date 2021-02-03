@@ -11,13 +11,13 @@ class CallableRelationResolver implements RelationResolverInterface
 
     protected string $type;
 
-    protected Closure $resolver;
+    protected Closure $resolveCallback;
 
-    public function __construct(string $relatedModel, string $type, Closure $resolver)
+    public function __construct(string $relatedModel, string $type, Closure $resolveCallback)
     {
         $this->relatedModel = $relatedModel;
         $this->type = $type;
-        $this->resolver = $resolver;
+        $this->resolveCallback = $resolveCallback;
     }
 
     public function getRelatedModel(): string
@@ -30,8 +30,8 @@ class CallableRelationResolver implements RelationResolverInterface
         return $this->type;
     }
 
-    public function getResolver(): Closure
+    public function getResolveCallback(): Closure
     {
-        return $this->resolver;
+        return $this->resolveCallback;
     }
 }
