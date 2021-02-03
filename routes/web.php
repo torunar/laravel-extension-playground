@@ -13,4 +13,6 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', 'DebugController@index');
+Route::get('/', static function () {
+    return 'hello world';
+});
